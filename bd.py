@@ -50,7 +50,12 @@ def checker(id):
     else:
         return False
 
+#Вся информация о товаре
+def show_info(pr_name):
+    sql.execute('SELECT * FROM products WHERE pr_name = ?;', (pr_name,))
+    product = sql.fetchall()
 
+    return product
 # Добавление продуктов
 def add_products(pr_name, pr_amount, pr_price, pr_desc, pr_photo):
     sql.execute('INSERT INTO products (pr_name, pr_amount, pr_price, pr_des, pr_photo) '
@@ -92,5 +97,24 @@ def get_all_products():
 
     return all_products.fetchall()
 
+def get_names():
+    sql.execute('SELECT pr_name FROM products;')
+    return sql.fetchall()
+
+
 ##Методы для корзины##
-# Удаление товаров из корзины
+#Добавление товаров в корзину
+def add_to_cart(user_id, user_product, user_product_quantity, user_total):
+    sql.execute('INSERT INTO user_cart VALUES(?,?,?,?);',
+                (user_id, user_product, user_product_quantity, user_total))
+    connection.commit()
+
+#Удаление товаров из корзины
+def del_from_cart(user_id):
+    sql.execute('DELETE FROM user_cart WHERE user_id = ?;', (user_id))
+    connection.commit()
+
+#Отображение товаров из корзины
+def show_cart(user_id):
+    sql.execute('SELECT user_product, user_product_quantity,'
+                'user_total FROM user_cart WHERE user_id = ?', (user_id))

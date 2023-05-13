@@ -24,18 +24,30 @@ def loc_button():
     # Возвращаем результат
     return kb
 
-
-def product_names_button():
+def cart_button():
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
 
-    all_products = bd.get_all_products()
-    print(all_products)
+    for i in bd.get_all_products():
+        kb.add(i[1])
+    button = types.KeyboardButton('Корзина')
+    kb.add(button)
+    return kb
 
-    pr_names_button = [i[1] for i in all_products]
-    print(pr_names_button)
 
-    kb.add(pr_names_button)
+def product_name_buttons():
+    kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    for i in bd.get_names():
+        kb.add(i)
 
+    return kb
+
+def cart_buttons():
+    kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
+
+    order = types.KeyboardButton('Заказать')
+    delete = types.KeyboardButton('Удалить товары')
+
+    kb.add(order, delete)
     return kb
 
 
@@ -46,8 +58,9 @@ def admin_menu():
     button1 = types.KeyboardButton('Добавить продукт')
     button2 = types.KeyboardButton('Редактирововать продукт')
     button3 = types.KeyboardButton('Удалить продукт')
+    button4 = types.KeyboardButton('Список продуктов')
 
-    kb.add(button1, button2, button3)
+    kb.add(button1, button2, button3, button4)
 
     return kb
 
