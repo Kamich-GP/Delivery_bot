@@ -104,9 +104,9 @@ def get_names():
 
 ##Методы для корзины##
 #Добавление товаров в корзину
-def add_to_cart(user_id, user_product, user_product_quantity, user_total):
+def add_to_cart(user_id, user_product, product_quantity, total):
     sql.execute('INSERT INTO user_cart VALUES(?,?,?,?);',
-                (user_id, user_product, user_product_quantity, user_total))
+                (user_id, user_product, product_quantity, total))
     connection.commit()
 
 #Удаление товаров из корзины
@@ -116,5 +116,6 @@ def del_from_cart(user_id):
 
 #Отображение товаров из корзины
 def show_cart(user_id):
-    sql.execute('SELECT user_product, user_product_quantity,'
-                'user_total FROM user_cart WHERE user_id = ?', (user_id))
+    sql.execute('SELECT user_product, product_quantity, total FROM user_cart WHERE user_id = ?', (user_id,))
+    cart = sql.fetchall()
+    return cart

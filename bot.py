@@ -57,7 +57,6 @@ def get_location(message, user_name, user_number):
     # Если отправил локацию по кнопке
     if message.location:
         user_location = geolocator.reverse(f"{message.location.longitude}, {message.location.latitude}")
-        print(user_location)
         # Регистрируем пользователя
         bd.register(user_id, user_name, user_number, user_location)
         bot.send_message(user_id, 'Вы успешно зарегистрированы! Выберите пункт меню', reply_markup=buttons.product_name_buttons())
@@ -73,7 +72,6 @@ def get_location(message, user_name, user_number):
 #Вывод информации о товаре
 def text(message):
     all_products = [i[1] for i in bd.get_all_products()]
-    print(all_products)
     if message.text in all_products:
         user_product = message.text
         full_info = bd.show_info(user_product)
@@ -81,8 +79,15 @@ def text(message):
         for i in range(1,11):
             num_kb.add(str(i))
         bot.send_photo(user_id, photo=full_info[-1], caption=f'Описание: {full_info[0]}\n'
-                                                             f'Цена: {full_info[0]}\n', reply_markup=num_kb)
+                                                             f'Цена: {full_info[1]}\n', reply_markup=num_kb)
         bot.register_next_step_handler(message, get_count, user_product, full_info)
+    elif message.text == 'Корзина':
+        full_cart = 'Ваша корзина:\n\n'
+        for i in bd.show_cart(user_id):
+            full_cart += f'Товар: {i[0]}\nКоличество: {i[1]}\nИтого: {i[2]}'
+        bot.send_message(user_id, full_cart)
+        bot.send_message(user_id, 'Выберите действие', reply_markup=buttons.cart_buttons())
+
 def get_count(message, user_product, full_info):
     user_count = int(message.text)
     total_for_product = full_info[1] * user_count
