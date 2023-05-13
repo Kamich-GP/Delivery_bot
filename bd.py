@@ -52,8 +52,8 @@ def checker(id):
 
 #Вся информация о товаре
 def show_info(pr_name):
-    sql.execute('SELECT * FROM products WHERE pr_name = ?;', (pr_name,))
-    product = sql.fetchall()
+    sql.execute('SELECT pr_des, pr_price, pr_photo FROM products WHERE pr_name = ?;', (pr_name,))
+    product = sql.fetchone()
 
     return product
 # Добавление продуктов
@@ -98,8 +98,8 @@ def get_all_products():
     return all_products.fetchall()
 
 def get_names():
-    sql.execute('SELECT pr_name FROM products;')
-    return sql.fetchall()
+    names = sql.execute('SELECT pr_name FROM products;').fetchall()
+    return names
 
 
 ##Методы для корзины##

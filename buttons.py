@@ -37,7 +37,7 @@ def cart_button():
 def product_name_buttons():
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
     for i in bd.get_names():
-        kb.add(i)
+        kb.add(i[0])
 
     return kb
 

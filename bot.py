@@ -20,7 +20,7 @@ def start_message(message):
     check_user = bd.checker(user_id)
     # Если пользователь есть в базе данных
     if check_user:
-        bot.send_message(user_id, 'Привествую в нашем боте! Выберите пункт меню')
+        bot.send_message(user_id, 'Привествую в нашем боте! Выберите пункт меню', reply_markup=buttons.product_name_buttons())
     # Если пользователя нет в базе данных
     else:
         bot.send_message(user_id, 'Приветствую в нашем боте! Прошу, введите имя!')
@@ -79,9 +79,9 @@ def text(message):
         full_info = bd.show_info(user_product)
         num_kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
         for i in range(1,11):
-            num_kb.add(i)
+            num_kb.add(str(i))
         bot.send_photo(user_id, photo=full_info[-1], caption=f'Описание: {full_info[0]}\n'
-                                                             f'Цена: {full_info[1]}\n', reply_markup=num_kb)
+                                                             f'Цена: {full_info[0]}\n', reply_markup=num_kb)
         bot.register_next_step_handler(message, get_count, user_product, full_info)
 def get_count(message, user_product, full_info):
     user_count = int(message.text)
